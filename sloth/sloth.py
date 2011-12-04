@@ -11,3 +11,7 @@ class Sloth(QtGui.QApplication):
 
         self.queuehandler = QueueHandler()
         self.downloader = Downloader()
+
+        QtCore.QCoreApplication.setOrganizationName("RP")
+        QtCore.QCoreApplication.setApplicationName("Sloth")
+        self.config = QtCore.QSettings()

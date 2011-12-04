@@ -20,6 +20,7 @@ class Downloader(QtCore.QObject):
         self.ftp.commandFinished.connect(self.commandFinished)
         self._files = {}
         self._clear()
+        self.config = QtCore.QSettings()
 
     def enqueue(self, items):
         if self._items is None:
@@ -27,7 +28,7 @@ class Downloader(QtCore.QObject):
             print items
             if not self.ftp.state in (QtNetwork.QFtp.Connected,
                     QtNetwork.QFtp.LoggedIn, QtNetwork.QFtp.Login):
-                self.ftp.connectToHost("localhost")
+                self.ftp.connectToHost(self.config.value("server"))
         else:
             pass
             # TODO: merge the two *items*
@@ -52,7 +53,8 @@ class Downloader(QtCore.QObject):
         """docstring for stateChanged"""
         if state == QtNetwork.QFtp.Connected:
             QtCore.qDebug("Connected")
-            self.ftp.login("anonymous", "foo@bar.tld")
+            self.ftp.login(self.config.value("user"),
+                           self.config.value("password"))
         if state == QtNetwork.QFtp.LoggedIn:
             QtCore.qDebug("Logged in")
             self._find_next_file()

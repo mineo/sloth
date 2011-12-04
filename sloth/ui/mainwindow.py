@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/mainwindow.ui'
 #
-# Created: Tue Nov 29 15:48:21 2011
+# Created: Sun Dec  4 21:16:52 2011
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(800, 600)
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Aniftp-Qt", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Sloth", None, QtGui.QApplication.UnicodeUTF8))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
@@ -40,6 +40,10 @@ class Ui_MainWindow(object):
         self.downloadButton.setText(QtGui.QApplication.translate("MainWindow", "Download", None, QtGui.QApplication.UnicodeUTF8))
         self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
         self.horizontalLayout.addWidget(self.downloadButton)
+        self.settingsButton = QtGui.QPushButton(self.centralwidget)
+        self.settingsButton.setText(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
+        self.settingsButton.setObjectName(_fromUtf8("settingsButton"))
+        self.horizontalLayout.addWidget(self.settingsButton)
         self.saveQueueButton = QtGui.QPushButton(self.centralwidget)
         self.saveQueueButton.setText(QtGui.QApplication.translate("MainWindow", "Save queue", None, QtGui.QApplication.UnicodeUTF8))
         self.saveQueueButton.setObjectName(_fromUtf8("saveQueueButton"))

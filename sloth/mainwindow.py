@@ -3,6 +3,7 @@ from ui.mainwindow import Ui_MainWindow
 from feedreader import FeedReader
 from PyQt4 import QtGui, QtCore
 from . import model
+from .settings import SettingsDialog
 
 class MainWindow(Ui_MainWindow):
     def setupUi(self, window):
@@ -14,6 +15,8 @@ class MainWindow(Ui_MainWindow):
         self.downloadButton.clicked.connect(self._download)
         self.deleteButton.clicked.connect(self._delete_row)
         self.saveQueueButton.clicked.connect(self._save_queue)
+        self.settings = SettingsDialog()
+        self.settingsButton.clicked.connect(self.settings.show)
 
         QtGui.qApp.queuehandler.finishedLoading.connect(self._set_model)
         QtGui.qApp.queuehandler.load()
