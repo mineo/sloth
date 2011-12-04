@@ -1,0 +1,3 @@
+import sloth
+
+sloth.main()
