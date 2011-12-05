@@ -40,7 +40,7 @@ class MainWindow(Ui_MainWindow):
                 items[l_model.item(i, model.COLUMN_CRC).text()] = \
                         l_model.item(i, model.COLUMN_ANIME).text()
 
-        self.downloader.enqueue(items)
+        QtGui.qApp.downloader.enqueue(items)
 
     def _downloaded(self, crc):
         l_model = self.episodeTable.model()
@@ -90,4 +90,4 @@ class MainWindow(Ui_MainWindow):
 
     def _save_queue(self):
         model = self.episodeTable.model()
-        self.queuehandler.save(model)
+        QtGui.qApp.queuehandler.save(model)
