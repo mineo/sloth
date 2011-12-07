@@ -14,11 +14,11 @@ class QueueHandler(QtCore.QObject):
         if platform.startswith("win"):
             self._file = join(
                 getenv("APPDATA", "~\\Application Data"),
-                "Aniftp-Qt", "queue")
+                "Sloth", "queue")
         else:
             self._file = join(expanduser(
                 getenv("XDG_DATA_HOME", "~/.local/share")),
-                "Aniftp-Qt", "queue")
+                "Sloth", "queue")
 
         if not exists(dirname(self._file)):
             mkdir(dirname(self._file))
