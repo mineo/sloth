@@ -16,10 +16,13 @@ class FeedReader(QtCore.QObject):
     def load(self):
         p_
         dicts = []
+        config = QtCore.QSettings()
+
         for entry in p_feed["entries"]:
-            #if fileid <= lastfileid:
+            fileid = entry.link[-6:]
+            if fileid <= config.value("lastfileid", 0):
                 #logger.debug("Fileid is too low: %i" % fileid)
-                #continue
+                continue
 
             filetype_re = re.compile(".*\.mkv.*")
             # If filetype_re is valid, the entry.title should be matched
@@ -28,6 +31,9 @@ class FeedReader(QtCore.QObject):
                     ## No match -> next entry
                     #logger.debug("%s didn't match your filetype_re" % entry.title)
                     continue
+
+            if fileid > config.value("lastfileid", 0):
+                config.setValue("lastfileid", fileid)
 
             # This all has to be executed whether filetype_re is None or there was
             # a match for filetype_re in entry.title
