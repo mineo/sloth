@@ -28,7 +28,8 @@ class Downloader(QtCore.QObject):
             print items
             if not self.ftp.state in (QtNetwork.QFtp.Connected,
                     QtNetwork.QFtp.LoggedIn, QtNetwork.QFtp.Login):
-                self.ftp.connectToHost(self.config.value("server"))
+                self.ftp.connectToHost(self.config.value("server").toString(),
+                                        self.config.value("port").toInt()[0])
         else:
             pass
             # TODO: merge the two *items*
@@ -44,6 +45,9 @@ class Downloader(QtCore.QObject):
             try:
                 self._current_item = self._items.popitem()
                 self._list_after_cd = True
+                QtCore.qDebug(self._current_item[1][0] + "/" +
+                    self._current_item[1])
+
                 self.ftp.cd(self._current_item[1][0] + "/" +
                     self._current_item[1])
             except KeyError:
@@ -53,11 +57,12 @@ class Downloader(QtCore.QObject):
         """docstring for stateChanged"""
         if state == QtNetwork.QFtp.Connected:
             QtCore.qDebug("Connected")
-            self.ftp.login(self.config.value("user"),
-                           self.config.value("password"))
+            self.ftp.login(self.config.value("user").toString(),
+                           self.config.value("password").toString())
         if state == QtNetwork.QFtp.LoggedIn:
-            QtCore.qDebug("Logged in")
+            self.ftp.cd("Anime")
             self._find_next_file()
+            QtCore.qDebug("Logged in")
 
     def listed(self, _file):
         if self._current_item is not None:
@@ -74,15 +79,19 @@ class Downloader(QtCore.QObject):
 
 
     def commandFinished(self, command, error):
+        QtCore.qDebug(str(self.ftp.currentCommand()))
         if error:
+            QtCore.qDebug("E" + str(self.ftp.error()))
             self._clear()
             self.ftp.close()
+            pass
 
         elif self.ftp.currentCommand() == QtNetwork.QFtp.Get:
+            QtCore.qDebug("Get")
             _file = self._files[command]
             crc = CRC32_RE.match(_file.fileName()).group(1).toLower()[1:9]
             self.fileDownloaded.emit(crc)
-            _file.close()
+            #_file.close()
 
             if self._items is None and not self.ftp.hasPendingCommands:
                 self.allDownloadsDone.emit()
@@ -93,6 +102,7 @@ class Downloader(QtCore.QObject):
             self._find_next_file()
 
         elif self.ftp.currentCommand() == QtNetwork.QFtp.List:
+            QtCore.qDebug("List")
             if self._current_item is not None:
                 crc = self._current_item[0]
                 if not crc in self._files:
@@ -102,5 +112,6 @@ class Downloader(QtCore.QObject):
             self._find_next_file()
 
         elif self.ftp.currentCommand() == QtNetwork.QFtp.Cd:
+            QtCore.qDebug("Cd")
             if self._list_after_cd:
                 self.ftp.list()
