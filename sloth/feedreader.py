@@ -44,7 +44,7 @@ class FeedReader(QtCore.QObject):
                 anime.replace(i[0],i[1])
             anime_name = anime.split(" -")[0]
             group = anime.split("[")[-1].split("]")[0]
-            episode = int(anime.split(" -")[1])
+            episode = anime.split(" -")[1]
 
             text = entry.content[0]["value"].replace("\n","")
             crc = CRC32_RE.match(text)
