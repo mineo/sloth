@@ -17,3 +17,18 @@ def make_model(rows=0, columns=COLUMNS):
     model.setHeaderData(COLUMN_GROUP,
             QtCore.Qt.Horizontal, QtCore.QString("Group"))
     return model
+
+def merge_models(old, new):
+    """docstring for merge_model"""
+    old_crcs = [(old.item(row, COLUMN_CRC).text(), row) for row in
+            xrange(old.columnCount())]
+    new_crcs = [(new.item(row, COLUMN_CRC).text(), row) for row in
+            xrange(new.columnCount())]
+
+    new_rows = [row for (crc, row) in new_crcs for (oldrow, oldcrc) in
+            old_crcs if oldcrc != crc]
+
+    for row in new_rows:
+        old.appendRow(new.takeRow(row))
+
+    return old

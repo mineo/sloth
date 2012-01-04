@@ -77,7 +77,11 @@ class MainWindow(Ui_MainWindow):
         self._set_model(d_model)
 
     def _set_model(self, new_model):
-        new_model.sort(model.COLUMN_ANIME)
+        old_model = self.episodeTable.model()
+        if old_model is not None:
+            new_model = model.merge_models(self.episodeTable.model(), new_model)
+            new_model.sort(model.COLUMN_EPISODE)
+            new_model.sort(model.COLUMN_ANIME)
         self.episodeTable.setModel(new_model)
         self.episodeTable.resizeColumnsToContents()
 
