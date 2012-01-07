@@ -17,7 +17,7 @@ class FeedReader(QtCore.QObject):
         p_feed = feedparser.parse(str(config.value("feed").toString()))
 
         for entry in p_feed["entries"]:
-            fileid = entry.link[-6:]
+            fileid = int(entry.link[-7:])
             if fileid <= config.value("lastfileid", 0):
                 #logger.debug("Fileid is too low: %i" % fileid)
                 continue
@@ -30,7 +30,7 @@ class FeedReader(QtCore.QObject):
                     #logger.debug("%s didn't match your filetype_re" % entry.title)
                     continue
 
-            if fileid > config.value("lastfileid", 0):
+            if fileid > config.value("lastfileid", 0).toInt()[0]:
                 config.setValue("lastfileid", fileid)
 
             # This all has to be executed whether filetype_re is None or there was
@@ -56,4 +56,5 @@ class FeedReader(QtCore.QObject):
                     "episode": episode,
                     "group": group})
 
+        config.sync()
         self.finishedLoading.emit(dicts)
