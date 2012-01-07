@@ -68,12 +68,12 @@ class MainWindow(Ui_MainWindow):
         for index, item in enumerate(dicts):
             d_model.setData(d_model.index(index, 0), QtCore.QVariant(item["anime"]))
             if "episode" in item:
-                d_model.setData(d_model.index(index, 1),
+                d_model.setData(d_model.index(index, model.COLUMN_EPISODE),
                         QtCore.QVariant(item["episode"]))
             if "group" in item:
-                d_model.setData(d_model.index(index, 3),
+                d_model.setData(d_model.index(index, model.COLUMN_GROUP),
                         QtCore.QVariant(item["group"]))
-            d_model.setData(d_model.index(index, 2), QtCore.QVariant(item["crc"]))
+            d_model.setData(d_model.index(index, model.COLUMN_CRC), QtCore.QVariant(item["crc"]))
         self._set_model(d_model)
 
     def _set_model(self, new_model):
