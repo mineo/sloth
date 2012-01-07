@@ -11,12 +11,10 @@ class FeedReader(QtCore.QObject):
 
     finishedLoading = QtCore.pyqtSignal([list])
 
-    
-
     def load(self):
-        p_
         dicts = []
         config = QtCore.QSettings()
+        p_feed = feedparser.parse(str(config.value("feed").toString()))
 
         for entry in p_feed["entries"]:
             fileid = entry.link[-6:]

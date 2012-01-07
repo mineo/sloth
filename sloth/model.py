@@ -29,10 +29,10 @@ def merge_models(old, new):
     new_crcs = [(new.item(row, COLUMN_CRC).text(), row) for row in
             xrange(new.rowCount())]
 
-    new_rows = [row for (crc, row) in new_crcs for (oldrow, oldcrc) in
-            old_crcs if oldcrc != crc]
-
-    for row in new_rows:
+    for crc, row in new_crcs:
+        for old_crc, _ in old_crcs:
+            if crc == old_crc:
+                break
         old.appendRow(new.takeRow(row))
 
     return old
