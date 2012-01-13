@@ -16,22 +16,24 @@ class FeedReader(QtCore.QObject):
         config = QtCore.QSettings()
         p_feed = feedparser.parse(str(config.value("feed").toString()))
 
+        new_max_fileid = old_max_fileid = config.value("lastfileid",
+                0).toInt()[0]
         for entry in p_feed["entries"]:
             fileid = int(entry.link[-7:])
-            if fileid <= config.value("lastfileid", 0):
-                #logger.debug("Fileid is too low: %i" % fileid)
+            if fileid <= old_max_fileid:
+                QtCore.qDebug("Fileid is too low: %i" % fileid)
                 continue
 
             filetype_re = re.compile(".*\.mkv.*")
             # If filetype_re is valid, the entry.title should be matched
             if filetype_re is not None:
                 if filetype_re.match(entry.title) is None:
+                    QtCore.qDebug("Skipping %s" % entry.title)
                     ## No match -> next entry
                     #logger.debug("%s didn't match your filetype_re" % entry.title)
                     continue
 
-            if fileid > config.value("lastfileid", 0).toInt()[0]:
-                config.setValue("lastfileid", fileid)
+            new_max_fileid = max(fileid, new_max_fileid)
 
             # This all has to be executed whether filetype_re is None or there was
             # a match for filetype_re in entry.title
@@ -56,5 +58,6 @@ class FeedReader(QtCore.QObject):
                     "episode": episode,
                     "group": group})
 
+        config.setValue("lastfileid", new_max_fileid)
         config.sync()
         self.finishedLoading.emit(dicts)
