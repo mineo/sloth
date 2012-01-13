@@ -60,6 +60,7 @@ class MainWindow(Ui_MainWindow):
     def _load_feed(self):
         loader = FeedReader()
         loader.finishedLoading.connect(self._dicts_to_tree)
+        loader.finishedLoading.connect(self._save_queue)
         loader.load()
 
     def _dicts_to_tree(self, dicts):
