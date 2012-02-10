@@ -12,6 +12,7 @@ class SettingsDialog(QtGui.QDialog, settings.Ui_dialog):
         self.user.setText(config.value("user").toString())
         self.password.setText(config.value("password").toString())
         self.feed.setText(config.value("feed").toString())
+        self.save_files_to_location.setText(config.value("save_files_to").toString())
 
     def update_settings(self):
         config = QtCore.QSettings()
@@ -20,4 +21,5 @@ class SettingsDialog(QtGui.QDialog, settings.Ui_dialog):
         config.setValue("user", self.user.text())
         config.setValue("password", self.password.text())
         config.setValue("feed", self.feed.text())
+        config.setValue("save_files_to", self.save_files_to_location.text())
         config.sync()

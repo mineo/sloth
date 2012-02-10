@@ -1,6 +1,7 @@
 import re
 
 from PyQt4 import QtNetwork, QtCore
+from os.path import join
 
 CRC32_RE = re.compile(".*(\([A-Fa-f0-9]{8,8}\)).*")
 
@@ -73,14 +74,19 @@ class Downloader(QtCore.QObject):
                 self._list_after_cd = False
 
     def _download(self, _filename):
-        _file = QtCore.QFile(_filename)
+        _local_filename = join(
+                unicode(self.config.value("save_files_to").toString()),
+                unicode(_filename))
+        _file = QtCore.QFile(_local_filename)
         _file.open(QtCore.QIODevice.WriteOnly)
-        self._files[self.ftp.get(_filename, _file)] = _file
+        get = self.ftp.get(_filename, _file)
+        QtCore.qDebug("Getting %s" % _filename)
+        self._files[get] = _file
 
 
     def commandFinished(self, command, error):
-        QtCore.qDebug(str(self.ftp.currentCommand()))
         if error:
+            QtCore.qDebug("command" + str(self.ftp.currentCommand()))
             QtCore.qDebug("E" + str(self.ftp.error()))
             self._clear()
             self.ftp.close()

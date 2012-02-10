@@ -22,8 +22,10 @@ def merge_models(old, new):
     """docstring for merge_model"""
     if old.rowCount() == 0:
         return new
+
     if new.rowCount() == 0:
         return old
+
     old_crcs = [(old.item(row, COLUMN_CRC).text(), row) for row in
             xrange(old.rowCount())]
     new_crcs = [(new.item(row, COLUMN_CRC).text(), row) for row in

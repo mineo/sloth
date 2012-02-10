@@ -18,6 +18,7 @@ class FeedReader(QtCore.QObject):
 
         new_max_fileid = old_max_fileid = config.value("lastfileid",
                 0).toInt()[0]
+
         for entry in p_feed["entries"]:
             fileid = int(entry.link[-7:])
             if fileid <= old_max_fileid:
