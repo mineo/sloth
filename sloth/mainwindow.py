@@ -47,6 +47,7 @@ class MainWindow(Ui_MainWindow):
         for i in xrange(0, l_model.rowCount()):
                 if crc == l_model.data(l_model.index(i, model.COLUMN_CRC)).toString():
                     l_model.removeRows(i, 1)
+        self._save_queue()
 
     def _notfound(self, crc):
         l_model = self.episodeTable.model()
